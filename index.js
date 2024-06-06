@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import TaskModel from "./models/TaskModel.js";
+import authRouter from "./routers/authRouter.js";
+import taskRouter from "./routers/taskRouter.js";
 
 dotenv.config();
 
@@ -14,56 +15,11 @@ const dburl = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWOR
 app.use(express.json());
 app.use(cors());
 
-app.post("/add-new-task", async (req, res) => {
-  const { content } = req.body;
-  if (!content) {
-    throw new Error("Missing content");
-  }
+app.use("/api-v1/auth", authRouter);
 
-  const newTask = new TaskModel({
-    content,
-  });
+app.use("/api-v1/tasks", taskRouter);
 
-  await newTask.save();
 
-  res.status(200).json({
-    message: "Create new  tasks successfully",
-    data: newTask,
-  });
-});
-
-app.get("/get-tasks", async (req, res) => {
-  const tasks = await TaskModel.find();
-  res.status(200).json({
-    message: "Get Tasks successfully",
-    data: tasks,
-  });
-});
-
-app.put("/update-task", async (req, res) => {
-  const { id } = req.query;
-  const { content } = req.body;
-
-  // console.log(id);
-
-  await TaskModel.findByIdAndUpdate(id, { content });
-  res.status(203).json({
-    message: 'Updated',
-    data: []
-  })
-  // res.send("asdf");
-});
-
-app.delete('/remove-task', async(req, res) => {
-  const {id} = req.query
-
-  await TaskModel.findByIdAndDelete(id)
-
-  res.status(205).json({
-    message: 'Removed',
-    data: []
-  })
-})
 
 const connectDB = async () => {
   try {
@@ -86,6 +42,5 @@ connectDB().then(() => {
     console.log(`Server is starting at http://localhost:${PORT}`);
   });
 });
-
 
 // Lesson5: MVC
