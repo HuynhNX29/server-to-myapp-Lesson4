@@ -14,7 +14,7 @@ const taskRouter = Router();
 //   res.send("fafafa");
 // });
 
-taskRouter.use(logger); //yeu cau su dung cho tat ca router
+// taskRouter.use(logger); //yeu cau su dung cho tat ca router
 
 taskRouter.post("/add-new-task", addNewTask);
 

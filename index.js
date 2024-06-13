@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRouter from "./routers/authRouter.js";
 import taskRouter from "./routers/taskRouter.js";
+import logger from "./middlewares/logger.js";
 
 dotenv.config();
 
@@ -15,11 +16,13 @@ const dburl = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWOR
 app.use(express.json());
 app.use(cors());
 
+app.get("/", logger, (req, res) => {
+  res.send("<h1>Hello</h1>");
+});
+
 app.use("/api-v1/auth", authRouter);
 
 app.use("/api-v1/tasks", taskRouter);
-
-
 
 const connectDB = async () => {
   try {
