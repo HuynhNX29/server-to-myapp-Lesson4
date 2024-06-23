@@ -1,4 +1,5 @@
 import { Router } from "express";
+import verifyToken from "../middlewares/verifyToken.js";
 import {
   addNewTask,
   deleteTask,
@@ -6,6 +7,7 @@ import {
   updateTask,
 } from "../controllers/taskControllers.js";
 import logger from "../middlewares/logger.js";
+
 import TaskModel from "../models/TaskModel.js";
 
 const taskRouter = Router();
@@ -14,11 +16,13 @@ const taskRouter = Router();
 //   res.send("fafafa");
 // });
 
-// taskRouter.use(logger); //yeu cau su dung cho tat ca router
+taskRouter.use(verifyToken); //yeu cau su dung cho tat ca router
 
 taskRouter.post("/add-new-task", addNewTask);
 
 // taskRouter.get("/get-tasks",logger, getTasks ); //chi su dung cho router nay
+
+// taskRouter.get("/get-tasks", getTasks);
 
 taskRouter.get("/get-tasks", getTasks);
 
