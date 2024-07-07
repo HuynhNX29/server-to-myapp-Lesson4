@@ -34,9 +34,10 @@ const login = async (req, res) => {
     }
 
     res.status(200).json({
-      message: "Welcome back",
+      message: "Login successfully!",
       data: {
         username,
+        email: existingUser.email,
         _id: existingUser._id,
         accesstoken: JWT.GetJWT({ id: existingUser._id, username }),
       },
@@ -62,6 +63,11 @@ const register = async (req, res) => {
 
   const existingUser = await UserModel.findOne({ username });
 
+  /*
+  mongose: find = filter (array)
+          findone = find (array)
+  */
+
   if (existingUser) {
     throw new Error("User is already registered");
   }
@@ -72,6 +78,7 @@ const register = async (req, res) => {
 
   const newUser = new UserModel({
     username,
+    email: body.email,
     password: hashPassword,
   });
 

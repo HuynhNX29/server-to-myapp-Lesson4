@@ -1,7 +1,6 @@
 import { Schema } from "mongoose";
 import mongoose from "mongoose";
 
-
 const UserScheme = new Schema({
   username: {
     require: true,
@@ -11,6 +10,11 @@ const UserScheme = new Schema({
     require: true,
     type: String,
   },
+
+  email: {
+    type: String,
+  },
+  
   createAt: {
     type: Date,
     default: Date.now(),
